@@ -4,6 +4,7 @@ import { PieChart, Pie, ResponsiveContainer, Cell, BarChart, Bar, XAxis, YAxis, 
 import { ArrowUpRight, CalendarCheck, Clock, UserPlus } from "lucide-react";
 import { leaveRequests, employees, leaveTypes, departments } from "@/data/mockData";
 
+
 const AdminDashboard = () => {
   // Quick stats
   const pendingRequests = leaveRequests.filter(req => req.status === 'pending').length;
@@ -40,6 +41,7 @@ const AdminDashboard = () => {
       leave: approvedLeave
     };
   });
+
 
   return (
     <div className="space-y-6">

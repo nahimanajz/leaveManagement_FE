@@ -1,24 +1,22 @@
-
 import { Link, useLocation } from 'react-router-dom';
 import { 
   Calendar, 
   ClipboardList, 
-  BarChart3, 
-  Users, 
-  Home
+  History,
+  Home,
+  FileText
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
-const Sidebar = () => {
+const EmployeeSidebar = () => {
   const location = useLocation();
   
   const navItems = [
-    { name: 'Dashboard', path: '/admin', icon: Home },
-    { name: 'Leave Types', path: '/admin/leave-types', icon: ClipboardList },
-    { name: 'Leave Calendar', path: '/admin/calendar', icon: Calendar },
-    { name: 'Manage Leaves', path: '/admin/manage-leaves', icon: ClipboardList },
-    { name: 'Reports', path: '/admin/reports', icon: BarChart3 },
-    { name: 'Employees', path: '/admin/employees', icon: Users }
+    { name: 'Dashboard', path: '/employee', icon: Home },
+    { name: 'Apply Leave', path: '/employee/apply', icon: ClipboardList },
+    { name: 'Leave History', path: '/employee/history', icon: History },
+    { name: 'Team Calendar', path: '/employee/calendar', icon: Calendar },
+    { name: 'Documents', path: '/employee/documents', icon: FileText }
   ];
 
   return (
@@ -28,13 +26,13 @@ const Sidebar = () => {
       </div>
       <nav className="mt-6 px-3">
         <p className="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-2 pl-3">
-          Admin Controls
+          Employee Portal
         </p>
         <ul className="space-y-1">
           {navItems.map((item) => {
             const isActive = 
-              (item.path === '/admin' && location.pathname === '/admin') ||
-              (item.path !== '/admin' && location.pathname.startsWith(item.path));
+              (item.path === '/employee' && location.pathname === '/employee') ||
+              (item.path !== '/employee' && location.pathname.startsWith(item.path));
               
             return (
               <li key={item.path}>
@@ -59,4 +57,4 @@ const Sidebar = () => {
   );
 };
 
-export default Sidebar;
+export default EmployeeSidebar; 
