@@ -3,14 +3,14 @@ import { LeaveRequest } from "@/types/leaveTypes";
 import { employees, leaveTypes } from "@/data/mockData";
 import { formatDate } from "@/utils/leaveUtils";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
+import { DayComponentProps } from "react-day-picker";
 
-interface CalendarDayProps {
-  day: Date;
+interface CalendarDayProps extends DayComponentProps {
   leaveRequests: LeaveRequest[];
 }
 
-const CalendarDay = ({ day, leaveRequests }: CalendarDayProps) => {
-  if (leaveRequests.length === 0) return null;
+const CalendarDay = ({ date, leaveRequests, ...props }: CalendarDayProps) => {
+  if (!date || leaveRequests.length === 0) return null;
 
   // Group requests by leave type
   const leaveTypeCount: { [key: string]: number } = {};
@@ -25,7 +25,7 @@ const CalendarDay = ({ day, leaveRequests }: CalendarDayProps) => {
     <TooltipProvider>
       <Tooltip>
         <TooltipTrigger asChild>
-          <div className="relative w-full h-full">
+          <div className="relative w-full h-full" {...props}>
             <div className="absolute bottom-0 left-0 right-0 flex gap-0.5 justify-center">
               {Object.entries(leaveTypeCount).map(([typeId, count]) => {
                 const leaveType = leaveTypes.find(lt => lt.id === typeId);
@@ -42,7 +42,7 @@ const CalendarDay = ({ day, leaveRequests }: CalendarDayProps) => {
         </TooltipTrigger>
         <TooltipContent>
           <div className="space-y-2">
-            <p className="font-semibold">{formatDate(day.toISOString())}</p>
+            <p className="font-semibold">{formatDate(date.toISOString())}</p>
             <div className="space-y-1">
               {leaveRequests.map(request => {
                 const employee = employees.find(emp => emp.id === request.employeeId);
