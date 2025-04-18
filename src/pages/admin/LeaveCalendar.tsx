@@ -3,7 +3,7 @@ import { useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Calendar } from "@/components/ui/calendar";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { departments, leaveRequests as mockLeaveRequests } from "@/data/mockData";
+import { departments, leaveRequests as mockLeaveRequests, employees } from "@/data/mockData";
 import { LeaveRequest } from "@/types/leaveTypes";
 import CalendarDay from "@/components/leave/CalendarDay";
 import LeaveLegend from "@/components/leave/LeaveLegend";
@@ -55,11 +55,10 @@ const LeaveCalendar = () => {
           <Calendar
             mode="multiple"
             components={{
-              Day: ({ date, ...props }) => (
+              Day: (props) => (
                 <CalendarDay
-                  date={date}
-                  leaveRequests={getRequestsForDay(date)}
                   {...props}
+                  leaveRequests={getRequestsForDay(props.day)}
                 />
               )
             }}
