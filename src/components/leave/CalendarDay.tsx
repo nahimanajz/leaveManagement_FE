@@ -5,13 +5,12 @@ import { formatDate } from "@/utils/leaveUtils";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import { DayContentProps } from "react-day-picker";
 
-// Extend the DayContentProps interface from react-day-picker
 interface CalendarDayProps extends DayContentProps {
   leaveRequests: LeaveRequest[];
 }
 
-const CalendarDay = ({ day, leaveRequests, ...props }: CalendarDayProps) => {
-  if (!day || leaveRequests.length === 0) return null;
+const CalendarDay = ({ date, leaveRequests, ...props }: CalendarDayProps) => {
+  if (!date || leaveRequests.length === 0) return null;
 
   // Group requests by leave type
   const leaveTypeCount: { [key: string]: number } = {};
@@ -43,7 +42,7 @@ const CalendarDay = ({ day, leaveRequests, ...props }: CalendarDayProps) => {
         </TooltipTrigger>
         <TooltipContent>
           <div className="space-y-2">
-            <p className="font-semibold">{formatDate(day.toISOString())}</p>
+            <p className="font-semibold">{formatDate(date.toISOString())}</p>
             <div className="space-y-1">
               {leaveRequests.map(request => {
                 const employee = employees.find(emp => emp.id === request.employeeId);

@@ -55,12 +55,15 @@ const LeaveCalendar = () => {
           <Calendar
             mode="multiple"
             components={{
-              Day: (props) => (
-                <CalendarDay
-                  {...props}
-                  leaveRequests={getRequestsForDay(props.day)}
-                />
-              )
+              Day: (props) => {
+                const day = props.date;
+                return day ? (
+                  <CalendarDay
+                    {...props}
+                    leaveRequests={getRequestsForDay(day)}
+                  />
+                ) : null;
+              }
             }}
           />
           <LeaveLegend />
