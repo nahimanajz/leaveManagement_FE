@@ -56,13 +56,16 @@ const LeaveCalendar = () => {
             mode="multiple"
             components={{
               Day: (props) => {
-                const day = props.date;
-                return day ? (
+                const dayRequests = getRequestsForDay(props.date);
+                return dayRequests.length > 0 ? (
                   <CalendarDay
                     {...props}
-                    leaveRequests={getRequestsForDay(day)}
+                    leaveRequests={dayRequests}
                   />
-                ) : null;
+                ) : (
+                  // Just render the default day if no leave requests
+                  <div className="h-9 w-9 p-0 font-normal">{props.date.getDate()}</div>
+                );
               }
             }}
           />
