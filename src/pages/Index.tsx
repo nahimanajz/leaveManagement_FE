@@ -1,4 +1,3 @@
-
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 import {
@@ -6,7 +5,8 @@ import {
   Calendar,
   BarChart3,
   Users,
-  ArrowRight
+  ArrowRight,
+  User
 } from "lucide-react";
 
 const Index = () => {
@@ -20,12 +20,20 @@ const Index = () => {
           <p className="text-lg text-gray-600 mb-8">
             Streamline how staff apply for and manage their leave in accordance with the Rwandan Labor Law (2023)
           </p>
-          <Link to="/admin">
-            <Button size="lg" className="bg-primary hover:bg-primary/90">
-              Go to Admin Dashboard
-              <ArrowRight className="ml-2 h-5 w-5" />
-            </Button>
-          </Link>
+          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            <Link to="/admin">
+              <Button size="lg" className="bg-primary hover:bg-primary/90">
+                Go to Admin Dashboard
+                <ArrowRight className="ml-2 h-5 w-5" />
+              </Button>
+            </Link>
+            <Link to="/employee">
+              <Button size="lg" variant="outline" className="border-primary text-primary hover:bg-primary/10">
+                Go to Employee Dashboard
+                <User className="ml-2 h-5 w-5" />
+              </Button>
+            </Link>
+          </div>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
