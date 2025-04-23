@@ -7,11 +7,9 @@ import LeaveTypes from "./pages/admin/LeaveTypes";
 import ManageLeaves from "./pages/admin/ManageLeaves";
 import LeaveCalendar from "./pages/admin/LeaveCalendar";
 import LeaveReports from "./pages/admin/LeaveReports";
-import ManageEmployees from "./pages/admin/ManageEmployees";
 import ApplyLeave from "./pages/employee/ApplyLeave";
 import LeaveHistory from "./pages/employee/LeaveHistory";
 import TeamCalendar from "./pages/employee/TeamCalendar";
-import Documents from "./pages/employee/Documents";
 import NotFound from "./pages/NotFound";
 import EmployeeDashboard from "./pages/EmployeeDashboard";
 import ProtectedRoute from "./components/ProtectedRoute";
@@ -54,10 +52,6 @@ export const router = createBrowserRouter([
       {
         path: "reports",
         element: <LeaveReports />,
-      },
-      {
-        path: "employees",
-        element: <ManageEmployees />,
       },
     ],
   },
