@@ -1,21 +1,25 @@
-
-import { leaveTypes } from "@/data/mockData";
+import React from 'react'
+import { useQuery } from "@tanstack/react-query";
+import { getAllLeaveTypes } from "@/services/leavetypes";
 
 const LeaveLegend = () => {
+  // Fetch leave types to display in legend
+  const { data: leaveTypes = [] } = useQuery({
+    queryKey: ["leaveTypes"],
+    queryFn: getAllLeaveTypes,
+  });
+
   return (
-    <div className="mt-6">
-      <h3 className="text-lg font-semibold mb-2">Legend</h3>
-      <div className="flex flex-wrap gap-4">
-        {leaveTypes.map(type => (
-          <div key={type.id} className="flex items-center">
-            <div 
-              className="w-3 h-3 rounded-full mr-2" 
-              style={{ backgroundColor: type.color }}
-            />
-            <span className="text-sm">{type.name}</span>
-          </div>
-        ))}
-      </div>
+    <div className="mt-6 flex flex-wrap gap-4">
+      {leaveTypes.map((leaveType) => (
+        <div key={leaveType.id} className="flex items-center gap-2">
+          <div 
+            className="h-3 w-3 rounded-full" 
+            style={{ backgroundColor: leaveType.color }}
+          ></div>
+          <span className="text-sm">{leaveType.name}</span>
+        </div>
+      ))}
     </div>
   );
 };

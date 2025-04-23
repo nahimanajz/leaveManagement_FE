@@ -18,7 +18,6 @@ const Sidebar = () => {
     { name: 'Leave Calendar', path: '/admin/calendar', icon: Calendar },
     { name: 'Manage Leaves', path: '/admin/manage-leaves', icon: ClipboardList },
     { name: 'Reports', path: '/admin/reports', icon: BarChart3 },
-    { name: 'Employees', path: '/admin/employees', icon: Users }
   ];
 
   return (

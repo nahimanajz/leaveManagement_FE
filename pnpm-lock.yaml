@@ -5097,6 +5097,7 @@ snapshots:
       '@azure/msal-browser': 4.11.0
       '@azure/msal-react': 3.0.10(@azure/msal-browser@4.11.0)(react@18.3.1)
       '@hookform/resolvers': 3.10.0(react-hook-form@7.55.0(react@18.3.1))
+      '@microsoft/microsoft-graph-client': 3.0.7(@azure/msal-browser@4.11.0)
       '@radix-ui/react-accordion': 1.2.7(@types/react-dom@18.3.6(@types/react@18.3.20))(@types/react@18.3.20)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@radix-ui/react-alert-dialog': 1.1.10(@types/react-dom@18.3.6(@types/react@18.3.20))(@types/react@18.3.20)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@radix-ui/react-aspect-ratio': 1.1.4(@types/react-dom@18.3.6(@types/react@18.3.20))(@types/react@18.3.20)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
@@ -5148,9 +5149,12 @@ snapshots:
       vaul: 0.9.9(@types/react-dom@18.3.6(@types/react@18.3.20))(@types/react@18.3.20)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       zod: 3.24.3
     transitivePeerDependencies:
+      - '@azure/identity'
       - '@types/react'
       - '@types/react-dom'
+      - buffer
       - debug
+      - stream-browserify
       - tailwindcss
 
   which@2.0.2:

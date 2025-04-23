@@ -59,4 +59,9 @@ export type ReportType =
     document?: File | null;
   }
 
- 
+ export interface NotificationResponse {
+  id:string,
+  title:string;
+  message: string;
+  isRead:boolean
+ }

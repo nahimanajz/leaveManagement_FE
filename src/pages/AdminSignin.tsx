@@ -19,8 +19,8 @@ const AdminAuth: React.FC = () => {
   const signInMutation = useMutation({
     mutationFn: adminSignin,
     onSuccess: (data) => {
-      console.log(data)
-      //saveUserSession(data);
+
+      saveUserSession(data);
       redirectToDashboard(data)
     },
     onError: (error: any) => {

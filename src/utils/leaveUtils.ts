@@ -69,6 +69,12 @@ export function formatDate(dateString: string): string {
     day: 'numeric' 
   });
 }
+export const getLeaveDuration = (start: string, end: string): number => {
+  const startDate = new Date(start);
+  const endDate = new Date(end);
+  const diffTime = endDate.getTime() - startDate.getTime();
+  return Math.floor(diffTime / (1000 * 60 * 60 * 24)) + 1;
+};
 
 /**
  * Get leave requests for a specific department

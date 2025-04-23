@@ -3,6 +3,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { PieChart, Pie, ResponsiveContainer, Cell, BarChart, Bar, XAxis, YAxis, Tooltip, Legend } from 'recharts';
 import { ArrowUpRight, CalendarCheck, Clock, UserPlus } from "lucide-react";
 import { leaveRequests, employees, leaveTypes, departments } from "@/data/mockData";
+import { Link } from "react-router-dom";
 
 
 const AdminDashboard = () => {
@@ -11,18 +12,7 @@ const AdminDashboard = () => {
   const employeeCount = employees.length;
   const approvedRequests = leaveRequests.filter(req => req.status === 'approved').length;
   
-  // Leave usage by type
-  const leaveUsageByType = leaveTypes.map(type => {
-    const totalUsed = leaveRequests
-      .filter(req => req.leaveTypeId === type.id && req.status === 'approved')
-      .reduce((sum, req) => sum + req.totalDays, 0);
-      
-    return {
-      name: type.name,
-      value: totalUsed,
-      color: type.color
-    };
-  });
+  
   
   // Department leave distribution
   const departmentLeaveData = departments.map(dept => {
@@ -104,121 +94,23 @@ const AdminDashboard = () => {
         </Card>
       </div>
       
-      {/* Charts */}
-      <div className="grid gap-4 md:grid-cols-2">
-        <Card className="col-span-1">
-          <CardHeader>
-            <CardTitle>Leave Usage by Type</CardTitle>
-            <CardDescription>
-              Distribution of approved leave days by type
-            </CardDescription>
-          </CardHeader>
-          <CardContent className="h-[300px]">
-            <ResponsiveContainer width="100%" height="100%">
-              <PieChart>
-                <Pie
-                  data={leaveUsageByType}
-                  cx="50%"
-                  cy="50%"
-                  innerRadius={60}
-                  outerRadius={80}
-                  paddingAngle={5}
-                  dataKey="value"
-                  label={({ name, percent }) => `${name} ${(percent * 100).toFixed(0)}%`}
-                  labelLine={false}
-                >
-                  {leaveUsageByType.map((entry, index) => (
-                    <Cell key={`cell-${index}`} fill={entry.color} />
-                  ))}
-                </Pie>
-                <Tooltip />
-              </PieChart>
-            </ResponsiveContainer>
-          </CardContent>
-        </Card>
-        
-        <Card className="col-span-1">
-          <CardHeader>
-            <CardTitle>Department Leave Distribution</CardTitle>
-            <CardDescription>
-              Total approved leave days per department
-            </CardDescription>
-          </CardHeader>
-          <CardContent className="h-[300px]">
-            <ResponsiveContainer width="100%" height="100%">
-              <BarChart data={departmentLeaveData}>
-                <XAxis dataKey="name" />
-                <YAxis />
-                <Tooltip />
-                <Legend />
-                <Bar dataKey="leave" name="Leave Days" fill="#8884d8" />
-              </BarChart>
-            </ResponsiveContainer>
-          </CardContent>
-        </Card>
-      </div>
+ 
       
       {/* Recent Leave Requests */}
       <Card>
         <CardHeader>
           <CardTitle>Recent Leave Requests</CardTitle>
-          <CardDescription>
-            Latest leave requests across all departments
+          <CardDescription className=" flex flex-col gap-2">
+            Latest leave requests across all departments 
+            <Link
+                          to="/admin/reports"
+                          className="text-primary hover:underline mt-auto"
+                        >
+                          Navigate to Leave reports Types →
+                        </Link>
           </CardDescription>
         </CardHeader>
-        <CardContent>
-          <div className="overflow-x-auto">
-            <table className="w-full">
-              <thead>
-                <tr className="border-b">
-                  <th className="text-left py-3 px-2">Employee</th>
-                  <th className="text-left py-3 px-2">Department</th>
-                  <th className="text-left py-3 px-2">Leave Type</th>
-                  <th className="text-left py-3 px-2">Duration</th>
-                  <th className="text-left py-3 px-2">Status</th>
-                </tr>
-              </thead>
-              <tbody>
-                {leaveRequests
-                  .sort((a, b) => new Date(b.requestDate).getTime() - new Date(a.requestDate).getTime())
-                  .slice(0, 5)
-                  .map((request) => {
-                    const employee = employees.find(e => e.id === request.employeeId);
-                    const department = departments.find(d => d.id === employee?.department);
-                    const leaveType = leaveTypes.find(lt => lt.id === request.leaveTypeId);
-                    
-                    return (
-                      <tr key={request.id} className="border-b">
-                        <td className="py-3 px-2">{employee?.name || 'Unknown'}</td>
-                        <td className="py-3 px-2">{department?.name || 'Unknown'}</td>
-                        <td className="py-3 px-2">
-                          <span className="inline-flex items-center">
-                            <span 
-                              className="w-2 h-2 rounded-full mr-2" 
-                              style={{ backgroundColor: leaveType?.color || '#ccc' }}
-                            />
-                            {leaveType?.name || 'Unknown'}
-                          </span>
-                        </td>
-                        <td className="py-3 px-2">{request.totalDays} days</td>
-                        <td className="py-3 px-2">
-                          <span className={`px-2 py-1 text-xs rounded-full ${
-                            request.status === 'approved' 
-                              ? 'bg-green-100 text-green-800' 
-                              : request.status === 'rejected'
-                                ? 'bg-red-100 text-red-800'
-                                : 'bg-yellow-100 text-yellow-800'
-                          }`}>
-                            {request.status.charAt(0).toUpperCase() + request.status.slice(1)}
-                          </span>
-                        </td>
-                      </tr>
-                    );
-                  })}
-              </tbody>
-            </table>
-          </div>
-        </CardContent>
+       
       </Card>
     </div>
   );
