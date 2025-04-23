@@ -1,21 +1,47 @@
 import { useState } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { getAllLeaveTypes, createLeaveType, updateLeaveType, deleteLeaveType } from "@/services/leavetypes";
+import {
+  getAllLeaveTypes,
+  createLeaveType,
+  updateLeaveType,
+  deleteLeaveType,
+} from "@/services/leavetypes";
 import { LeaveType } from "@/types/leaveTypes";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog";
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import {
+  Dialog,
+  DialogContent,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
 import { Plus, Edit, Trash2 } from "lucide-react";
 import { Switch } from "@/components/ui/switch";
-import { toast } from "sonner"; 
+import { toast } from "sonner";
 
 const LeaveTypes = () => {
   const queryClient = useQueryClient();
   const [isOpen, setIsOpen] = useState(false);
-  const [currentLeaveType, setCurrentLeaveType] = useState<LeaveType | null>(null);
+  const [currentLeaveType, setCurrentLeaveType] = useState<LeaveType | null>(
+    null
+  );
 
   // Fetch all leave types
   const { data: leaveTypes = [], isLoading } = useQuery({
@@ -27,7 +53,7 @@ const LeaveTypes = () => {
   const createMutation = useMutation({
     mutationFn: createLeaveType,
     onSuccess: () => {
-      queryClient.invalidateQueries({queryKey:["leaveTypes"]}); // Refresh leave types
+      queryClient.invalidateQueries({ queryKey: ["leaveTypes"] }); // Refresh leave types
       setIsOpen(false);
       toast.success("Leave type created successfully!");
     },
@@ -38,9 +64,10 @@ const LeaveTypes = () => {
 
   // Update leave type mutation
   const updateMutation = useMutation({
-    mutationFn: ({ id, data }: { id: string; data: LeaveType }) => updateLeaveType(id, data),
+    mutationFn: ({ id, data }: { id: string; data: LeaveType }) =>
+      updateLeaveType(id, data),
     onSuccess: () => {
-      queryClient.invalidateQueries({queryKey:["leaveTypes"]}); 
+      queryClient.invalidateQueries({ queryKey: ["leaveTypes"] });
       setIsOpen(false);
       toast.success("Leave type updated successfully!");
     },
@@ -53,7 +80,7 @@ const LeaveTypes = () => {
   const deleteMutation = useMutation({
     mutationFn: deleteLeaveType,
     onSuccess: () => {
-      queryClient.invalidateQueries({queryKey:["leaveTypes"]}); // Refresh leave types
+      queryClient.invalidateQueries({ queryKey: ["leaveTypes"] }); // Refresh leave types
       toast.success("Leave type deleted successfully!");
     },
     onError: (error) => {
@@ -90,7 +117,10 @@ const LeaveTypes = () => {
 
     if (currentLeaveType.id) {
       // Update existing leave type
-      updateMutation.mutate({ id: currentLeaveType.id, data: currentLeaveType });
+      updateMutation.mutate({
+        id: currentLeaveType.id,
+        data: currentLeaveType,
+      });
     } else {
       // Create new leave type
       createMutation.mutate(currentLeaveType);
@@ -129,7 +159,9 @@ const LeaveTypes = () => {
       <Card>
         <CardHeader>
           <CardTitle>Manage Leave Types</CardTitle>
-          <CardDescription>Configure the different types of leave available to employees</CardDescription>
+          <CardDescription>
+            Configure the different types of leave available to employees
+          </CardDescription>
         </CardHeader>
         <CardContent>
           <Table>
@@ -148,10 +180,15 @@ const LeaveTypes = () => {
                 <TableRow key={leaveType.id}>
                   <TableCell>
                     <div className="flex items-center">
-                      <div className="w-3 h-3 rounded-full mr-2" style={{ backgroundColor: leaveType.color }} />
+                      <div
+                        className="w-3 h-3 rounded-full mr-2"
+                        style={{ backgroundColor: leaveType.color }}
+                      />
                       <div>
                         <p className="font-medium">{leaveType.name}</p>
-                        <p className="text-sm text-muted-foreground">{leaveType.description}</p>
+                        <p className="text-sm text-muted-foreground">
+                          {leaveType.description}
+                        </p>
                       </div>
                     </div>
                   </TableCell>
@@ -170,10 +207,18 @@ const LeaveTypes = () => {
                     />
                   </TableCell>
                   <TableCell className="text-right">
-                    <Button variant="ghost" size="icon" onClick={() => handleOpenDialog(leaveType)}>
+                    <Button
+                      variant="ghost"
+                      size="icon"
+                      onClick={() => handleOpenDialog(leaveType)}
+                    >
                       <Edit className="h-4 w-4" />
                     </Button>
-                    <Button variant="ghost" size="icon" onClick={() => handleDelete(leaveType.id)}>
+                    <Button
+                      variant="ghost"
+                      size="icon"
+                      onClick={() => handleDelete(leaveType.id)}
+                    >
                       <Trash2 className="h-4 w-4" />
                     </Button>
                   </TableCell>
@@ -188,7 +233,8 @@ const LeaveTypes = () => {
         <DialogContent className="sm:max-w-[425px]">
           <DialogHeader>
             <DialogTitle>
-              {currentLeaveType && leaveTypes.some((lt: LeaveType) => lt.id === currentLeaveType.id)
+              {currentLeaveType &&
+              leaveTypes.some((lt: LeaveType) => lt.id === currentLeaveType.id)
                 ? "Edit Leave Type"
                 : "Add Leave Type"}
             </DialogTitle>
@@ -225,7 +271,9 @@ const LeaveTypes = () => {
                 <div className="flex col-span-3 items-center gap-2">
                   <div
                     className="w-6 h-6 rounded-full"
-                    style={{ backgroundColor: currentLeaveType?.color || "#8B5CF6" }}
+                    style={{
+                      backgroundColor: currentLeaveType?.color || "#8B5CF6",
+                    }}
                   />
                   <Input
                     id="color"
@@ -237,57 +285,74 @@ const LeaveTypes = () => {
                 </div>
               </div>
               <div className="grid grid-cols-4 items-center gap-4">
-                <Label htmlFor="defaultDays" className="text-right">
+                <label htmlFor="defaultDays" className="text-right">
                   Default Days
-                </Label>
-                <Input
+                </label>
+                <input
                   id="defaultDays"
-                  type="text"
+                  type="number"
                   min="0"
-                  step="0.01" 
-                  value={currentLeaveType?.defaultDays || 0}
-                  onChange={(e) => handleChange("defaultDays", parseInt(e.target.value))}
-                  className="col-span-3"
+                  step="0.01"
+                  value={currentLeaveType?.defaultDays || 0.0}
+                  onChange={(e) =>
+                    handleChange("defaultDays", parseFloat(e.target.value))
+                  }
+                  className="col-span-3 border rounded px-2 py-1"
                   required
                 />
               </div>
+
               <div className="grid grid-cols-4 items-center gap-4">
-                <Label htmlFor="maxCarryForward" className="text-right">
+                <label htmlFor="maxCarryForward" className="text-right">
                   Max Carry Forward
-                </Label>
-                <Input
+                </label>
+                <input
                   id="maxCarryForward"
-                  type="text"
+                  type="number"
                   min="0"
-                  step="0.01" 
-                  value={currentLeaveType?.maxCarryForward || 0}
-                  onChange={(e) => handleChange("maxCarryForward", parseInt(e.target.value))}
-                  className="col-span-3"
+                  step="0.01"
+                  value={currentLeaveType?.maxCarryForward || 0.0}
+                  onChange={(e) =>
+                    handleChange("maxCarryForward", parseFloat(e.target.value))
+                  }
+                  className="col-span-3 border rounded px-2 py-1"
                   required
                 />
               </div>
+
               <div className="grid grid-cols-4 items-center gap-4">
-                <Label htmlFor="monthlyAccrual" className="text-right">
+                <label htmlFor="monthlyAccrual" className="text-right">
                   Monthly Accrual
-                </Label>
-                <Input
+                </label>
+                <input
                   id="monthlyAccrual"
-                  type="text"
+                  type="number"
                   min="0"
-                  step="0.01" 
-                  value={currentLeaveType?.monthlyAccrual || 0}
-                  onChange={(e) => handleChange("monthlyAccrual", parseInt(e.target.value))}
-                  className="col-span-3"
+                  step="0.01"
+                  value={currentLeaveType?.monthlyAccrual || 0.0}
+                  onChange={(e) =>
+                    handleChange("monthlyAccrual", parseFloat(e.target.value))
+                  }
+                  className="col-span-3 border rounded px-2 py-1"
                   required
                 />
               </div>
             </div>
             <DialogFooter>
-              <Button type="button" variant="outline" onClick={handleCloseDialog}>
+              <Button
+                type="button"
+                variant="outline"
+                onClick={handleCloseDialog}
+              >
                 Cancel
               </Button>
-              <Button type="submit" disabled={createMutation.isPending || updateMutation.isPending}>
-                {createMutation.isPending || updateMutation.isPending ? "Saving..." : "Save"}
+              <Button
+                type="submit"
+                disabled={createMutation.isPending || updateMutation.isPending}
+              >
+                {createMutation.isPending || updateMutation.isPending
+                  ? "Saving..."
+                  : "Save"}
               </Button>
             </DialogFooter>
           </form>

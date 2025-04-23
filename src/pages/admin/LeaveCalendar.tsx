@@ -1,30 +1,50 @@
-
 import { useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Calendar } from "@/components/ui/calendar";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { departments, leaveRequests as mockLeaveRequests, employees } from "@/data/mockData";
 import { LeaveRequest } from "@/types/leaveTypes";
+import { LeaveResponse } from "@/types";
 import CalendarDay from "@/components/leave/CalendarDay";
 import LeaveLegend from "@/components/leave/LeaveLegend";
 import UpcomingLeaveTable from "@/components/leave/UpcomingLeaveTable";
+import { useQuery } from "@tanstack/react-query";
+import { getAllLeaves } from "@/services/leave";
+import { getAllUsers } from "@/services/user";
+import { fetchTeams } from "@/services/departments";
+import { isDateInRange } from "@/utils/leaveUtility";
+
 
 const LeaveCalendar = () => {
   const [selectedDepartment, setSelectedDepartment] = useState<string>("all");
-  const [leaveRequests] = useState<LeaveRequest[]>(mockLeaveRequests);
+  
+  // Fetch leave requests using React Query
+  const { data: leaves = [] } = useQuery({
+    queryKey: ["leaves"],
+    queryFn: getAllLeaves,
+  });
+  
+  // Fetch employees data
+  const { data: employees = [] } = useQuery({
+    queryKey: ["users"],
+    queryFn: getAllUsers,
+  });
+  
+  // Fetch departments data
+  const { data: departments = [] } = useQuery({
+    queryKey: ["departments"],
+    queryFn: fetchTeams,
+  });
   
   const filteredRequests = selectedDepartment === "all"
-    ? leaveRequests
-    : leaveRequests.filter(request => {
-        const employee = employees.find(emp => emp.id === request.employeeId);
-        return employee?.department === selectedDepartment;
+    ? leaves
+    : leaves.filter(request => {
+        const employee = employees.find(emp => emp.id === request.user.id);
+        return employee?.department.toLowerCase() === departments.find(d => d.id === selectedDepartment)?.name.toLowerCase();
       });
 
   const getRequestsForDay = (day: Date) => {
     return filteredRequests.filter(request => {
-      const start = new Date(request.startDate);
-      const end = new Date(request.endDate);
-      return day >= start && day <= end;
+      return isDateInRange(day, request.startDate, request.endDate);
     });
   };
 
@@ -63,7 +83,7 @@ const LeaveCalendar = () => {
                     leaveRequests={dayRequests}
                   />
                 ) : (
-                  // Just render the default day if no leave requests
+                  
                   <div className="h-9 w-9 p-0 font-normal">{props.date.getDate()}</div>
                 );
               }
@@ -77,4 +97,4 @@ const LeaveCalendar = () => {
   );
 };
 
-export default LeaveCalendar;
+export default LeaveCalendar

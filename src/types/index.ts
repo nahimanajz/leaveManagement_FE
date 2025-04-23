@@ -17,7 +17,9 @@ export interface LeaveResponse {
     microsoftId: string;
     position: string;
     department: string;
-    leaveBalances: number | string; //TODO: remove it because leaves remainder has to be obtained from leave_management entity
+    leaveBalances:{
+      [key:string]:number
+    }
   };
   approver?: {
     id: string;
@@ -46,3 +48,18 @@ enum UserRole {
   ADMIN,
   MANAGER,
 }
+
+export type LeaveRequest = {
+  id: string;
+  employeeId: string;
+  startDate: string;
+  endDate: string;
+  type: string;
+  status: string;
+  reason?: string;
+};
+
+export type ReportType = {
+  name: string;
+  value: number;
+};
