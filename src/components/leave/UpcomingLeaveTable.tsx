@@ -5,7 +5,7 @@ import { LeaveRequest } from "@/types/leaveTypes";
 import { LeaveResponse } from "@/types";
 import { getAllUsers } from "@/services/user";
 import { getAllLeaveTypes } from "@/services/leavetypes";
-import { formatDate } from "@/utils/leaveUtils";
+import { formatDate, getLeaveDuration } from "@/utils/leaveUtils";
 
 interface UpcomingLeaveTableProps {
   filteredRequests: LeaveRequest[] | LeaveResponse[];
@@ -52,6 +52,7 @@ const UpcomingLeaveTable = ({ filteredRequests }: UpcomingLeaveTableProps) => {
                 <th className="text-left py-3 px-2">Leave Type</th>
                 <th className="text-left py-3 px-2">From</th>
                 <th className="text-left py-3 px-2">To</th>
+                <th className="text-left py-3 px-2">Duration</th>
                 <th className="text-left py-3 px-2">Status</th>
               </tr>
             </thead>
@@ -96,6 +97,8 @@ const UpcomingLeaveTable = ({ filteredRequests }: UpcomingLeaveTableProps) => {
                     </td>
                     <td className="py-3 px-2">{formatDate(leave.startDate)}</td>
                     <td className="py-3 px-2">{formatDate(leave.endDate)}</td>
+                    <td className="py-3 px-2">{getLeaveDuration(leave.startDate,leave.endDate)} days</td>
+
                     <td className="py-3 px-2">
                       <span
                         className={`px-2 py-1 text-xs rounded-full ${

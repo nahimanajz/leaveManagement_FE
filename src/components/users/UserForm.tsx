@@ -1,6 +1,6 @@
 "use client";
 
-import { Employee } from "@/types/leaveTypes";
+import { Employee, LeaveType } from "@/types/leaveTypes";
 import { FC, useEffect, useState } from "react";
 import { useMutation, useQuery } from "@tanstack/react-query";
 
@@ -27,12 +27,13 @@ import { fetchTeams } from "@/services/departments";
 import { saveUser } from "@/services/user";
 import { toast } from "sonner";
 import { redirectToDashboard, saveUserSession } from "@/utils";
+import { getAllLeaveTypes } from "@/services/leavetypes";
 
 interface UserFormProps {
   currentEmployee?: Employee | null;
   isDialogOpen: boolean;
   setIsDialogOpen: (open: boolean) => void;
-  leaveTypes?: { id: string; name: string; color: string }[];
+  leaveTypes?: LeaveType[];
   handleLeaveBalanceChange?: (id: string, value: number) => void;
 }
 
@@ -54,6 +55,8 @@ const UserForm: FC<UserFormProps> = ({
       leaveBalances: {},
     } as Employee
   );
+
+
 
   const mutation = useMutation({
     mutationFn: (userData: Employee) => saveUser(userData),
@@ -186,7 +189,7 @@ const UserForm: FC<UserFormProps> = ({
             <div className="space-y-4">
               <h3 className="font-medium">Leave Balances</h3>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                {leaveTypes.map((leaveType) => (
+                {leaveTypes.map((leaveType:LeaveType) => (
                   <div key={leaveType.id} className="space-y-2">
                     <Label
                       htmlFor={`leave-${leaveType.id}`}
@@ -202,7 +205,7 @@ const UserForm: FC<UserFormProps> = ({
                       id={`leave-${leaveType.id}`}
                       type="number"
                       min="0"
-                      value={data.leaveBalances[leaveType.id] || 0}
+                      value={leaveType.defaultDays.toFixed(1) || 0.0}
                       onChange={(e) =>
                         handleLeaveBalanceChangeInternal(
                           leaveType.id,

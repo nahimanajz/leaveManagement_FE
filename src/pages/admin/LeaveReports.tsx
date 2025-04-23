@@ -14,22 +14,10 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import {
-  BarChart,
-  Bar,
-  XAxis,
-  YAxis,
-  CartesianGrid,
-  Tooltip,
-  Legend,
-  ResponsiveContainer,
-  PieChart,
-  Pie,
-  Cell,
-} from "recharts";
+
 import { CSVLink } from "react-csv";
-import { FileDown, FileText, Filter } from "lucide-react";
-import { Employee, ReportType } from "@/types/leaveTypes";
+import { FileDown, } from "lucide-react";
+import { Employee } from "@/types/leaveTypes";
 import { formatDate, generateLeaveReportCSV } from "@/utils/leaveUtils";
 import { getAllUsers } from "@/services/user";
 import { useQuery } from "@tanstack/react-query";

@@ -194,7 +194,7 @@ const LeaveTypes = () => {
                   </TableCell>
                   <TableCell>{leaveType.defaultDays} days</TableCell>
                   <TableCell>{leaveType.maxCarryForward}</TableCell>
-                  <TableCell>{leaveType.monthlyAccrual}%</TableCell>
+                  <TableCell>{leaveType.monthlyAccrual.toFixed(1)}</TableCell>
                   <TableCell>
                     <Switch
                       checked={leaveType.isActive}

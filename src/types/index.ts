@@ -17,9 +17,9 @@ export interface LeaveResponse {
     microsoftId: string;
     position: string;
     department: string;
-    leaveBalances:{
-      [key:string]:number
-    }
+    leaveBalances: {
+      [key: string]: number;
+    };
   };
   approver?: {
     id: string;
@@ -63,3 +63,8 @@ export type ReportType = {
   name: string;
   value: number;
 };
+
+export interface UserBalance {
+  userId: number;
+  data: { leaveTypeId: number; leaveBalance: number };
+}
