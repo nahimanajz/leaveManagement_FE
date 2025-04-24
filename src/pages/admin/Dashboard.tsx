@@ -1,36 +1,29 @@
 
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { PieChart, Pie, ResponsiveContainer, Cell, BarChart, Bar, XAxis, YAxis, Tooltip, Legend } from 'recharts';
 import { ArrowUpRight, CalendarCheck, Clock, UserPlus } from "lucide-react";
-import { leaveRequests, employees, leaveTypes, departments } from "@/data/mockData";
 import { Link } from "react-router-dom";
+import { useQuery } from "@tanstack/react-query";
+import { getAllLeaves } from "@/services/leave";
+import { getAllUsers } from "@/services/user";
+import { Employee } from "@/types/leaveTypes";
 
 
 const AdminDashboard = () => {
-  // Quick stats
-  const pendingRequests = leaveRequests.filter(req => req.status === 'pending').length;
-  const employeeCount = employees.length;
-  const approvedRequests = leaveRequests.filter(req => req.status === 'approved').length;
-  
-  
-  
-  // Department leave distribution
-  const departmentLeaveData = departments.map(dept => {
-    const deptEmployees = employees.filter(emp => emp.department === dept.id);
-    const deptEmployeeIds = deptEmployees.map(emp => emp.id);
-    
-    const approvedLeave = leaveRequests
-      .filter(req => 
-        deptEmployeeIds.includes(req.employeeId) && 
-        req.status === 'approved'
-      )
-      .reduce((sum, req) => sum + req.totalDays, 0);
-    
-    return {
-      name: dept.name,
-      leave: approvedLeave
-    };
+
+  const { data: leaves = [] } = useQuery({
+    queryKey: ["leaves"],
+    queryFn: () => getAllLeaves(),
   });
+  const { data: employees = [] } = useQuery({
+    queryKey: ["users"],
+    queryFn: () => getAllUsers(),
+  });
+  
+  // Quick stats
+  const pendingRequests = leaves.filter(req => req.approvalStatus.toLocaleLowerCase() === 'pending').length;
+  const employeeCount = employees.filter((e:Employee)=> e.role.toLowerCase() === "staff").length;
+  const approvedRequests = leaves.filter(req => req.approvalStatus.toLocaleLowerCase() === 'approved').length;
+  
 
 
   return (
@@ -78,20 +71,7 @@ const AdminDashboard = () => {
           </CardContent>
         </Card>
         
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between pb-2">
-            <CardTitle className="text-sm font-medium">Avg. Leave Days</CardTitle>
-            <ArrowUpRight className="h-4 w-4 text-muted-foreground" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">
-              {Math.round(leaveRequests.reduce((sum, req) => sum + req.totalDays, 0) / leaveRequests.length)}
-            </div>
-            <p className="text-xs text-muted-foreground">
-              +0.5 days from last quarter
-            </p>
-          </CardContent>
-        </Card>
+  
       </div>
       
  

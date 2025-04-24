@@ -19,6 +19,7 @@ export type Employee = {
   startDate: string;
   avatarUrl:string;
   microsoftId?:string;
+  role:string
   leaveBalances?: {
     [leaveTypeId: string]: number;
   };
