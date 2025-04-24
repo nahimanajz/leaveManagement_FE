@@ -3,6 +3,7 @@ import axiosInstance from "./axiosInterceptor";
 import { AdmindminOrManagerSignup, UserBalance } from "@/types";
 
 export const saveUser = async (userData: Employee) => {
+  console.log({userData})
   const response = await axiosInstance.post("/users/auth/signup", userData);
   console.log("User saved successfully:", response.data);
   return response.data;

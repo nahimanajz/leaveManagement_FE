@@ -73,10 +73,19 @@ const UserForm: FC<UserFormProps> = ({
 
   // Update form data when currentEmployee changes
   useEffect(() => {
-    if (currentEmployee) {
+    if (isDialogOpen && currentEmployee) {
       setData(currentEmployee);
+    } else if (isDialogOpen && !currentEmployee) {
+      setData({
+        name: "",
+        email: "",
+        position: "",
+        department: "",
+        startDate: "",
+        leaveBalances: {},
+      } as Employee);
     }
-  }, [currentEmployee]);
+  }, [isDialogOpen]);
 
   const handleCloseDialog = () => {
     setIsDialogOpen(false);
@@ -84,15 +93,13 @@ const UserForm: FC<UserFormProps> = ({
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    
     mutation.mutate(data); 
     
   };
 
   const handleChange = (key: keyof Employee, value: any) => {
-    setData((prevData) => ({
-      ...prevData,
-      [key]: value,
-    }));
+   setData({...data, [key]:value})
   };
 
   const handleLeaveBalanceChangeInternal = (id: string, value: number) => {
@@ -187,7 +194,7 @@ const UserForm: FC<UserFormProps> = ({
             </div>
 
             <div className="space-y-4">
-              <h3 className="font-medium">Leave Balances</h3>
+              <h3 className="font-medium">{leaveTypes.length ?"Leave Balances":""}</h3>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 {leaveTypes.map((leaveType:LeaveType) => (
                   <div key={leaveType.id} className="space-y-2">
